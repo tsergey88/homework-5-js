@@ -28,3 +28,43 @@
 
 **Комментарии**  
 Задачу необходимо решить используя ООП и ES5. Крайне желательно использование наследования и композиции. Типы начинок, размеры надо сделать константами. Никаких [магических строк](https://ru.wikipedia.org/wiki/%D0%9C%D0%B0%D0%B3%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D1%87%D0%B8%D1%81%D0%BB%D0%BE_(%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)#.D0.9F.D0.BB.D0.BE.D1.85.D0.B0.D1.8F_.D0.BF.D1.80.D0.B0.D0.BA.D1.82.D0.B8.D0.BA.D0.B0_.D0.BF.D1.80.D0.BE.D0.B3.D1.80.D0.B0.D0.BC.D0.BC.D0.B8.D1.80.D0.BE.D0.B2.D0.B0.D0.BD.D0.B8.D1.8F) не должно быть. 
+
+#### Примерный вид класса гамбургер  
+
+    /**
+    * Класс, объекты которого описывают параметры гамбургера. 
+    * 
+    * @constructor
+    * @param size        Размер
+    * @param stuffing    Начинка
+    */
+    function Hamburger(size, stuffing) { ... } 
+
+    /* Размеры, виды начинок и добавок */
+    Hamburger.SIZE_SMALL = ...
+    Hamburger.SIZE_LARGE = ...
+    Hamburger.STUFFING_CHEESE = ...
+    Hamburger.STUFFING_SALAD = ...
+    Hamburger.STUFFING_POTATO = ...
+
+    /**
+     * Узнать размер гамбургера
+     */
+    Hamburger.prototype.getSize = function () ...
+
+    /**
+     * Узнать начинку гамбургера
+     */
+    Hamburger.prototype.getStuffing = function () ...
+
+    /**
+     * Узнать цену гамбургера
+     * @return {Number} Цена в тугриках
+     */
+    Hamburger.prototype.calculatePrice = function () ...
+
+    /**
+     * Узнать калорийность
+     * @return {Number} Калорийность в калориях
+     */
+    Hamburger.prototype.calculateCalories = function () ...
