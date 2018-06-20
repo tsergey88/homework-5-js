@@ -220,8 +220,8 @@ Order.prototype.getOrderCalory = function() {
     console.log('Your calory is: ' + this.calory);
 }
 
-Order.prototype.paidOrder = function() {
-        this.flag = 0;
+Order.prototype.paidOrder = function(obj) {
+        return Object.freeze(obj);
     }
     //End order class and methods
 
@@ -240,5 +240,5 @@ console.log(drink.getSize(), drink.calculateCalories(), drink.calculatePrice());
 var order = new Order(salad, hamburger, drink);
 order.getOrderAmount(); // show amount
 order.getOrderCalory(); // show calory
-order.paidOrder(); // flag = 1
-order.removeItem(hamburger); // Error, order was closed
+order.paidOrder(order);
+order.removeItem(hamburger); // Nothing
