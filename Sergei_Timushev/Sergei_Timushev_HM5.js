@@ -14,8 +14,8 @@ Hamburger.STUFFING_POTATO = { price: 15, calory: 10, name: "POTATO", property: "
 Salad.SIZE_STANDART = { price: 1, calory: 1, name: "STANDART", property: "SIZE" };
 Salad.SIZE_MEDIUM = { price: 1.5, calory: 1.5, name: "MEDIUM", property: "SIZE" };
 Salad.SIZE_LARGE = { price: 2, calory: 2, name: "LARGE", property: "SIZE" };
-Salad.CAESAR = { price: 100, calory: 20, name: "CAESAR", property: "STUFFING" };
-Salad.OLIVIER = { price: 50, calory: 80, name: "OLIVIER", property: "STUFFING" };
+Salad.CAESAR = { price: 100, calory: 20, name: "CAESAR", property: "ITEM" };
+Salad.OLIVIER = { price: 50, calory: 80, name: "OLIVIER", property: "ITEM" };
 
 /**
  * Константы напитков
@@ -23,8 +23,8 @@ Salad.OLIVIER = { price: 50, calory: 80, name: "OLIVIER", property: "STUFFING" }
 Drink.SIZE_STANDART = { price: 1, calory: 1, name: "STANDART", property: "SIZE" };
 Drink.SIZE_MEDIUM = { price: 1.5, calory: 1.5, name: "MEDIUM", property: "SIZE" };
 Drink.SIZE_LARGE = { price: 2, calory: 2, name: "LARGE", property: "SIZE" };
-Drink.COLA = { price: 50, calory: 40, name: "Coca-Cola", property: "STUFFING" };
-Drink.COFFEE = { price: 80, calory: 20, name: "COFFEE", property: "STUFFING" };
+Drink.COLA = { price: 50, calory: 40, name: "Coca-Cola", property: "ITEM" };
+Drink.COFFEE = { price: 80, calory: 20, name: "COFFEE", property: "ITEM" };
 
 //Begin parent class and methods
 function Product(size, stuffing) {
@@ -35,7 +35,7 @@ function Product(size, stuffing) {
         throw new Error('Size of product is not set');
     }
     // Check that second param is stuffing
-    if (stuffing.property == "STUFFING") {
+    if (stuffing.property == "ITEM") {
         this.stuffing = stuffing;
     } else {
         throw new Error('Wrong param');
@@ -43,6 +43,7 @@ function Product(size, stuffing) {
 
     this.price = 0;
     this.calory = 0;
+
 }
 
 /**
@@ -60,6 +61,7 @@ Product.prototype.calculatePrice = function() {
     this.price = this.size.price * this.stuffing.price;
     //console.log( "Price is " + this.stuffing.length);
     return this.price;
+
 }
 
 /**
@@ -69,12 +71,19 @@ Product.prototype.calculateCalories = function() {
         this.calory = this.size.calory * this.stuffing.calory;
         return this.calory;
         //console.log( "Calory is " + this.calory);
+
     }
     //End parent class and methods
 
 //Begin child hamburger class and methods
 function Hamburger(size, stuffing) {
-    Product.apply(this, arguments);
+    // Check that first param is size
+    if (size.property == "SIZE") {
+        this.size = size;
+    } else {
+        throw new Error('Size of product is not set');
+    }
+
     this.stuffing = [];
     for (i = 1; i < arguments.length; i++) {
         if (arguments[i].property == "STUFFING") {
@@ -89,9 +98,11 @@ function Hamburger(size, stuffing) {
 Hamburger.prototype = Object.create(Product.prototype);
 Hamburger.prototype.constructor = Hamburger;
 
+
 /**
  * Добавить начинку в гамбургер
  */
+
 Hamburger.prototype.addStuffing = function(stuffing) {
     for (i = 0; i < arguments.length; i++) {
         this.stuffing.push(arguments[i]);
@@ -102,12 +113,15 @@ Hamburger.prototype.addStuffing = function(stuffing) {
 /**
  * Удалить начинку
  */
+
 Hamburger.prototype.removeStuffing = function(stuffing) {
+
     for (i = 0; i < arguments.length; i++) {
         if (this.stuffing.indexOf(arguments[i]) != -1) {
             this.stuffing.splice(this.stuffing.indexOf(arguments[i]), 1);
         }
     }
+
     return this.stuffing;
 }
 
@@ -134,6 +148,7 @@ Hamburger.prototype.calculatePrice = function() {
 
     //console.log( "Price of hamburger is " + this.price);
     return this.price;
+
 }
 
 /**
@@ -157,6 +172,7 @@ function Salad(size, stuffing) {
 // Унаследовать
 Salad.prototype = Object.create(Product.prototype);
 Salad.prototype.constructor = Salad;
+
 //End child salad class and methods
 
 //Begin child drink class and methods
@@ -167,9 +183,9 @@ function Drink(size, stuffing) {
 // Унаследовать
 Drink.prototype = Object.create(Product.prototype);
 Drink.prototype.constructor = Drink;
+
 //End child drink class and methods
 
-//Begin order class and methods
 function Order() {
     this.price = 0;
     this.calory = 0;
@@ -221,9 +237,12 @@ Order.prototype.getOrderCalory = function() {
 }
 
 Order.prototype.paidOrder = function(obj) {
-        return Object.freeze(obj);
-    }
-    //End order class and methods
+    return Object.freeze(obj);
+}
+
+Order.prototype.getAll = function() {
+    console.log(this.order_items);
+}
 
 var hamburger = new Hamburger(Hamburger.SIZE_STANDART, Hamburger.STUFFING_CHEESE, Hamburger.STUFFING_POTATO, Hamburger.STUFFING_POTATO);
 //hamburger.removeStuffing(Hamburger.STUFFING_POTATO, Hamburger.STUFFING_CHEESE);
@@ -240,5 +259,7 @@ console.log(drink.getSize(), drink.calculateCalories(), drink.calculatePrice());
 var order = new Order(salad, hamburger, drink);
 order.getOrderAmount(); // show amount
 order.getOrderCalory(); // show calory
-order.paidOrder(order);
-order.removeItem(hamburger); // Nothing
+order.paidOrder(order); // flag = 1
+order.flag = 1;
+order.removeItem(hamburger); // Error, order was closed
+order.getOrderAmount(); // show amount
